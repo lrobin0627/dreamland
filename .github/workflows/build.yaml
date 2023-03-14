@@ -36,11 +36,14 @@ jobs:
       - name: Update apiserver chart values.yaml
         uses: fjogeleit/yaml-update-action@main
         with:
-          valueFile: 'chart/charts/apiserver/values.yaml'
+          valueFile: 'chart/values.yaml'
           commitChange: true
           branch: main
           message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
+          title: 'Version Updates'
           changes: |
             {
-              "image.tag": "${{ steps.vars.outputs.sha_short }}",
+              "chart/charts/apiserver/values.yaml": {
+                "image.tag": "${{ steps.vars.outputs.sha_short }}",
+              }
             }
