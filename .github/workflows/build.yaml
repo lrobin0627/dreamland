@@ -30,13 +30,13 @@ jobs:
       - name: Update chart values.yaml
         uses: fjogeleit/yaml-update-action@main
         with:
-          valueFile: 'chart/values.yaml'
+          valueFile: 'chart/charts/apiserver/values.yaml'
           commitChange: true
           branch: main
           message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
           changes: |
             {
-              "apiserver.tag": "${{ steps.vars.outputs.sha_short }}",
+              "image.tag": "${{ steps.vars.outputs.sha_short }}",
             }
       - name: Build apiserver and push
         uses: docker/build-push-action@v3
