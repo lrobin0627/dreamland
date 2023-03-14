@@ -27,7 +27,13 @@ jobs:
         with:
           username: ${{ env.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Update chart values.yaml
+      - name: Build apiserver and push
+        uses: docker/build-push-action@v3
+        with:
+          context: apiserver
+          push: true
+          tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:${{ steps.vars.outputs.sha_short }}
+      - name: Update apiserver chart values.yaml
         uses: fjogeleit/yaml-update-action@main
         with:
           valueFile: 'chart/charts/apiserver/values.yaml'
@@ -38,9 +44,3 @@ jobs:
             {
               "image.tag": "${{ steps.vars.outputs.sha_short }}",
             }
-      - name: Build apiserver and push
-        uses: docker/build-push-action@v3
-        with:
-          context: apiserver
-          push: true
-          tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:${{ steps.vars.outputs.sha_short }}
