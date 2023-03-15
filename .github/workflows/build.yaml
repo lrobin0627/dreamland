@@ -33,17 +33,17 @@ jobs:
           context: apiserver
           push: true
           tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:${{ steps.vars.outputs.sha_short }}
-      - name: Update apiserver chart values.yaml
-        uses: fjogeleit/yaml-update-action@main
-        with:
-          valueFile: 'chart/values.yaml'
-          commitChange: true
-          branch: main
-          message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
-          title: 'Version Updates'
-          changes: |
-            {
-              "chart/charts/apiserver/values.yaml": {
-                "image.tag": "${{ steps.vars.outputs.sha_short }}",
-              }
-            }
+      # - name: Update apiserver chart values.yaml
+      #   uses: fjogeleit/yaml-update-action@main
+      #   with:
+      #     valueFile: 'chart/values.yaml'
+      #     commitChange: true
+      #     branch: main
+      #     message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
+      #     title: 'Version Updates'
+      #     changes: |
+      #       {
+      #         "chart/charts/apiserver/values.yaml": {
+      #           "image.tag": "${{ steps.vars.outputs.sha_short }}",
+      #         }
+      #       }
