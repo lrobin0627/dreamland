@@ -38,7 +38,15 @@ jobs:
           push: true
           # tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:${{ steps.branch.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
           tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:${{ steps.vars.outputs.sha_short }}
-      - name: Update chart parameters
+
+      - name: Checkout Target Repository
+        uses: actions/checkout@v3
+        with:
+          repository: lrobin/dreamland-deployment
+          path: infrastructure
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update chart of Target Repository
         uses: fjogeleit/yaml-update-action@main
         with:
           valueFile: 'chart/charts/apiserver/values.yaml'
@@ -48,8 +56,9 @@ jobs:
           targetBranch: main
           branch: main
           message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
-          repository: github.com/lrobin/dreamland-deployment
+          repository: lrobin/dreamland-deployment
           token: ${{ secrets.GITHUB_TOKEN }}
+          workDir: infrastructure
           # valueFile: 'chart/values.yaml'
           # commitChange: true
           # branch: main
