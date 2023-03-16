@@ -61,6 +61,7 @@ jobs:
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       - name: Set git config
+        working-directory: ./deployment
         run: |
           git config user.name lrobin0627
           git config user.email lipf160627@163.com
