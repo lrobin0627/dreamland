@@ -48,15 +48,17 @@ jobs:
     needs: [docker-build-push, ]
     runs-on: ubuntu-latest
     steps:
-      # - name: Set outputs
-      #   id: vars
-      #   run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       - name: Checkout Target Repository
         uses: actions/checkout@v3
         with:
           repository: lrobin0627/dreamland-deployment
           path: deployment
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set outputs
+        working-directory: ./deployment
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       - name: Update chart of Target Repository
         uses: fjogeleit/yaml-update-action@main
