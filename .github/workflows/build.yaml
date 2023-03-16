@@ -75,7 +75,7 @@ jobs:
           createPR: true
           targetBranch: main
           branch: main
-          commitUserName: lrobin0627
+          commitUserName: lipf160627@163.com
           commitUserEmail: lipf160627@163.com
           message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
           repository: lrobin0627/dreamland-deployment
