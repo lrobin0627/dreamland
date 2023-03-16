@@ -45,9 +45,11 @@ jobs:
           propertyPath: 'image.tag'
           value: ${{ steps.vars.outputs.sha_short }}
           createPR: true
+          targetBranch: main
           branch: main
           message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
-          
+          repository: lrobin/dreamland-deployment
+          token: ${{ secrets.GITHUB_TOKEN }}
           # valueFile: 'chart/values.yaml'
           # commitChange: true
           # branch: main
