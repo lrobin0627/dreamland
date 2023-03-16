@@ -48,7 +48,7 @@ jobs:
           targetBranch: main
           branch: main
           message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
-          repository: lrobin/dreamland-deployment
+          repository: github.com/lrobin/dreamland-deployment
           token: ${{ secrets.GITHUB_TOKEN }}
           # valueFile: 'chart/values.yaml'
           # commitChange: true
