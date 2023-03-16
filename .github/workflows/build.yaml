@@ -17,9 +17,10 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: main
-      - name: Set outputs
-        id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+          workDir: main
+      # - name: Set outputs
+      #   id: vars
+      #   run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       # - name: Extract branch name
       #   shell: bash
       #   run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
@@ -39,7 +40,7 @@ jobs:
           context: apiserver
           push: true
           # tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:${{ steps.branch.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
-          tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:${{ steps.vars.outputs.sha_short }}
+          tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:$(git rev-parse --short HEAD)
 
   deployment-update:
     needs: [docker-build-push, ]
@@ -54,6 +55,7 @@ jobs:
           repository: lrobin0627/dreamland-deployment
           path: deployment
           token: ${{ secrets.GITHUB_TOKEN }}
+          workDir: deployment
 
       - name: Update chart of Target Repository
         uses: fjogeleit/yaml-update-action@main
