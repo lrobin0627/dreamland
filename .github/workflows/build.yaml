@@ -17,14 +17,14 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: main
-          workDir: main
       # - name: Set outputs
       #   id: vars
       #   run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-      # - name: Extract branch name
-      #   shell: bash
-      #   run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      #   id: branch
+      - name: Extract branch name
+        shell: bash
+        working-directory: ./main
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: branch
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -40,7 +40,7 @@ jobs:
           context: apiserver
           push: true
           # tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:${{ steps.branch.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
-          tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:$(git rev-parse --short HEAD)
+          tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:${{ steps.vars.outputs.sha_short }}
 
   deployment-update:
     needs: [docker-build-push, ]
