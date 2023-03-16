@@ -60,6 +60,11 @@ jobs:
         id: vars
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
+      - name: Set git config
+        run: |
+          git config user.name lrobin0627
+          git config user.email lipf160627@163.com
+
       - name: Update chart of Target Repository
         uses: fjogeleit/yaml-update-action@main
         with:
