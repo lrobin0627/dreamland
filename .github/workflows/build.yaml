@@ -38,6 +38,7 @@ jobs:
       - name: Build apiserver and push
         uses: docker/build-push-action@v3
         with:
+          working-directory: ./main
           context: apiserver
           push: true
           # tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:${{ steps.branch.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
