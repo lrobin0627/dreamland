@@ -13,7 +13,7 @@ import (
 func main() {
 	e := echo.New()
 	e.GET("/hello", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello World Golang I am coming")
+		return c.String(http.StatusOK, "Hello World Golang, I am coming")
 	})
 	e.Logger.Fatal(e.Start(":8080"))
 }
