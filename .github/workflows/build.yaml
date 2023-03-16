@@ -18,10 +18,10 @@ jobs:
       - name: Set outputs
         id: vars
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: branch
+      # - name: Extract branch name
+      #   shell: bash
+      #   run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      #   id: branch
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -36,18 +36,19 @@ jobs:
         with:
           context: apiserver
           push: true
-          tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:${{ steps.branch.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
-      # - name: Update apiserver chart values.yaml
-      #   uses: fjogeleit/yaml-update-action@main
-      #   with:
-      #     valueFile: 'chart/values.yaml'
-      #     commitChange: true
-      #     branch: main
-      #     message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
-      #     title: 'Version Updates'
-      #     changes: |
-      #       {
-      #         "chart/charts/apiserver/values.yaml": {
-      #           "image.tag": "${{ steps.vars.outputs.sha_short }}",
-      #         }
-      #       }
+          # tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:${{ steps.branch.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
+          tags: ${{ env.DOCKERHUB_USERNAME }}/apiserver:${{ steps.vars.outputs.sha_short }}
+      - name: Update apiserver chart values.yaml
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: 'chart/values.yaml'
+          commitChange: true
+          branch: main
+          message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
+          title: 'Version Updates'
+          changes: |
+            {
+              "chart/charts/apiserver/values.yaml": {
+                "image.tag": "${{ steps.vars.outputs.sha_short }}",
+              }
+            }
