@@ -18,11 +18,12 @@ jobs:
         with:
           path: main
       - name: Set outputs
+        working-directory: ./main
         id: vars
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
       # - name: Extract branch name
       #   shell: bash
-      #   working-directory: ./main
       #   run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       #   id: branch
       - name: Set up QEMU
