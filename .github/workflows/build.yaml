@@ -43,10 +43,13 @@ jobs:
     needs: [docker-build-push, ]
     runs-on: ubuntu-latest
     steps:
+      - name: Set outputs
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       - name: Checkout Target Repository
         uses: actions/checkout@v3
         with:
-          repository: lrobin0627/dreamland-deployment
+          repository: lrobin0627/dreamland-deployment.git
           path: infrastructure
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -60,7 +63,7 @@ jobs:
           targetBranch: main
           branch: main
           message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
-          repository: lrobin0627/dreamland-deployment
+          repository: lrobin0627/dreamland-deployment.git
           token: ${{ secrets.GITHUB_TOKEN }}
           workDir: infrastructure
           # valueFile: 'chart/values.yaml'
