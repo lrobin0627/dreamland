@@ -8,7 +8,6 @@ on:
 
 env:
   DOCKERHUB_USERNAME: lrobin2023
-  COMMIT_SHORT: $(git rev-parse --short HEAD)
 
 jobs:
   docker-build-push:
@@ -49,17 +48,17 @@ jobs:
     needs: [docker-build-push, ]
     runs-on: ubuntu-latest
     steps:
-      # - name: Checkout Target Repository
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: lrobin0627/dreamland-deployment
-      #     path: deployment
-      #     # token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout Target Repository
+        uses: actions/checkout@v3
+        with:
+          repository: lrobin0627/dreamland-deployment
+          path: deployment
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Set outputs
-      #   working-directory: ./deployment
-      #   id: vars
-      #   run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Set outputs
+        working-directory: ./deployment
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       # - name: Set git config
       #   working-directory: ./deployment
@@ -72,16 +71,23 @@ jobs:
         with:
           valueFile: 'chart/charts/apiserver/values.yaml'
           propertyPath: 'image.tag'
-          value: ${{ env.COMMIT_SHORT }}
-          createPR: true
+          value: ${{ steps.vars.outputs.sha_short }}
+          createPR: false
+          message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
+          workDir: deployment
+
+          # valueFile: 'chart/charts/apiserver/values.yaml'
+          # propertyPath: 'image.tag'
+          # value: ${{ steps.vars.outputs.sha_short }}
+          # createPR: true
           # targetBranch: main
           # branch: main
           # commitUserName: lrobin0627
           # commitUserEmail: lipf160627@163.com
-          message: 'Update Image Version to ${{ env.COMMIT_SHORT }}'
-          repository: lrobin0627/dreamland-deployment
-          token: ${{ secrets.GITHUB_TOKEN }}
-          workDir: dreamland-deployment
+          # message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
+          # repository: lrobin0627/dreamland-deployment
+          # token: ${{ secrets.GITHUB_TOKEN }}
+          # workDir: deployment
 
           # valueFile: 'chart/values.yaml'
           # commitChange: true
@@ -94,3 +100,10 @@ jobs:
           #       "image.tag": "${{ steps.vars.outputs.sha_short }}",
           #     }
           #   }
+
+      - name: Git deployment repo Update
+        run: |
+          git config --global user.name "lrobin0627"
+          git config --global user.email "lipf160627@163.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/lrobin0627/dreamland-deployment
+          git commit -am "Update apiserver image tag" && git push || echo "No changes to commit"
