@@ -78,7 +78,7 @@ jobs:
           # branch: main
           # commitUserName: lrobin0627
           # commitUserEmail: lipf160627@163.com
-          message: 'Update Image Version to ${{ steps.vars.outputs.sha_short }}'
+          message: 'Update Image Version to ${{ env.COMMIT_SHORT }}'
           repository: lrobin0627/dreamland-deployment
           token: ${{ secrets.GITHUB_TOKEN }}
           # workDir: deployment
