@@ -81,7 +81,7 @@ jobs:
           message: 'Update Image Version to ${{ env.COMMIT_SHORT }}'
           repository: lrobin0627/dreamland-deployment
           token: ${{ secrets.GITHUB_TOKEN }}
-          # workDir: deployment
+          workDir: dreamland-deployment
 
           # valueFile: 'chart/values.yaml'
           # commitChange: true
