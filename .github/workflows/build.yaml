@@ -54,7 +54,7 @@ jobs:
         with:
           repository: lrobin0627/dreamland-deployment
           path: deployment
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set outputs
         working-directory: ./deployment
@@ -66,7 +66,7 @@ jobs:
         run: |
           # git config user.name lrobin0627
           # git config user.email lipf160627@163.com
-          echo ${{ env.MY_GIT_TOKEN }}
+          echo "${{ env.MY_GIT_TOKEN }}"
 
       - name: Update chart of Target Repository
         uses: fjogeleit/yaml-update-action@main
