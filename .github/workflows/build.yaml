@@ -72,7 +72,7 @@ jobs:
         with:
           valueFile: 'chart/charts/apiserver/values.yaml'
           propertyPath: 'image.tag'
-          value: ${{ steps.vars.outputs.sha_short }}
+          value: ${{ env.COMMIT_SHORT }}
           createPR: true
           # targetBranch: main
           # branch: main
